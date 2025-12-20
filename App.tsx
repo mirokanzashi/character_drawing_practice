@@ -11,7 +11,8 @@ import {
   Settings2, 
   History,
   Info,
-  ChevronRight
+  ChevronRight,
+  Download
 } from 'lucide-react';
 import { BrushSettings, ProcessorSettings, PracticeSession } from './types';
 import DrawingCanvas, { DrawingCanvasHandle } from './components/DrawingCanvas';
@@ -88,6 +89,20 @@ const App: React.FC = () => {
   };
 
   /**
+   * 描画された画像をローカルにダウンロード
+   */
+  const handleDownload = () => {
+    if (!canvasRef.current) return;
+    const dataUrl = canvasRef.current.getDataUrl();
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = `character_drawing_${Date.now()}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  /**
    * オリジナル画像にエッジ検出フィルタを適用
    */
   const updateProcessedImage = () => {
@@ -161,12 +176,20 @@ const App: React.FC = () => {
         </div>
         <div className="flex items-center gap-4">
           {view === 'practice' && (
-            <button 
-              onClick={() => fileInputRef.current?.click()}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm font-bold transition-all shadow-lg shadow-blue-900/20"
-            >
-              <Upload size={16} /> 画像を読み込む
-            </button>
+            <>
+              <button 
+                onClick={() => fileInputRef.current?.click()}
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm font-bold transition-all shadow-lg shadow-blue-900/20"
+              >
+                <Upload size={16} /> 画像を読み込む
+              </button>
+              <button
+                onClick={handleDownload}
+                className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg text-sm font-bold transition-all shadow-lg shadow-green-900/20"
+              >
+                <Download size={16} /> ダウンロード
+              </button>
+            </>
           )}
           <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileUpload} />
         </div>
