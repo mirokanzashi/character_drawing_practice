@@ -1,0 +1,8 @@
+
+{
+  "name": "Character Copying Application AI - Character Drawing Practice",
+  "description": "An advanced drawing practice tool for beginners to copy character art with AI assistance, feedback, and reference processing.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
